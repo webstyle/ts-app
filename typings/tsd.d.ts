@@ -5,3 +5,5 @@
 /// <reference path="node/node.d.ts" />
 /// <reference path="serve-static/serve-static.d.ts" />
 /// <reference path="body-parser/body-parser.d.ts" />
+/// <reference path="pg-types/pg-types.d.ts" />
+/// <reference path="pg/pg.d.ts" />
