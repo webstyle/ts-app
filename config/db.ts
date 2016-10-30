@@ -29,7 +29,6 @@ export class DB {
     query (sql: string, params: any[], callback) {
       pg.connect((err, client, done) => {
           if (err) return console.log('Failed to connect to database');
-
           client.query(sql, params, err, (err, result) => {
               if (err) return callback(err);
 

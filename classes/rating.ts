@@ -1,54 +1,36 @@
 import {RatingModel} from "../models/rating";
 import {UserModel} from "../models/user";
-
-
-// Mock values
-let user: UserModel[] = [
-    {
-        id: 1,
-        name: 'john'
-    },
-    {
-        id: 2,
-        name: 'doe'
-    }
-];
-
-let orders: OrderModel[] = [{
-    id: 12,
-    userId: 1
-}];
-
-
-let storage: RatingModel[] = [];
+import { BaseController } from "./controller";
+import { DB } from "../config/db";
 
 // Rating class
 export class Rating {
+   private db;
 
-    public rate(input: RatingModel): RatingModel {
-        for (let i:number = 0; i < orders.length; i++) {
-            if (orders[i].userId == input.userId) {
-                storage.push(input);
-            } else {
-                console.log('Access denied');
-            }
-        }
+   constructor() {
+     this.db = new DB();
+   }
 
-        return input;
+    public rate(input: Rating, callback) {
+        this.db.query('UPDATE', [input], (err, result) => {
+          if (err) return callback(err)
+
+          callback(null, result);
+        });
     }
 
-    public getAll(): RatingModel[] {
-        return storage;
+    public getAll(callback) {
+        this.db.query('SELECT * FROM rating', [], (err, result) => {
+            if (err) return callback(err);
+
+            callback(null, result);
+        });
     }
 
-    public getOne(index: number): RatingModel {
-        return storage[index];
+    public getOne(index: number) {
     }
 
-    public updateRating(index: number, input: RatingModel): RatingModel {
-        storage[index] = input;
-
-        return storage[index];
+    public updateRating(index: number, input) {
     }
 
 }
