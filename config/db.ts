@@ -5,9 +5,9 @@ export class Db {
 
     constructor() {
         this.db = new pg.Pool({
-            user: 'postgres', 
-            database: 'rating', 
-            password: 'qwerty', 
+            user: '', 
+            database: '', 
+            password: '', 
             host: 'localhost', 
             port: 5432, 
             max: 10, 

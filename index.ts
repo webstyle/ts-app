@@ -1,18 +1,30 @@
+// load modules
 import * as express from 'express';
-import { Db } from './config/db';
-import { ArticleModel } from './models/article';
-import { Article } from './classes/article';
 import * as bodyParser from 'body-parser';
 
+
+// load classes
+import { Db } from './config/db';
+import { Article } from './classes/article';
+
+
+// load models
+import { ArticleModel } from './models/article';
+import { RatingModel } from './models/rating';
+
+
+// init application
 const app = express();
 const port: number = 3000;
 const db = new Db;
 const article = new Article;
 
+
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 
 
+// articles routes
 app.get('/article', (req: express.Request, res: express.Response) => {
     article.getAll((err, result: ArticleModel[]) => {
         if (err) return res.send(err.message);
@@ -65,6 +77,23 @@ app.delete('/article/:id', requiredId, (req: express.Request, res: express.Respo
         res.json(result);
     });
 
+});
+
+
+// rating routes
+app.post('/article/:id/rate', requiredId, (req: express.Request, res: express.Response) => {
+    let id = req.params.id;
+
+    if (!req.body) return res.send('BODY required');
+ 
+    let rating: RatingModel = req.body;
+    rating.article_id = id;
+
+    article.rate(rating, (err, result) => {
+        if (err) return res.send(err.message);
+
+        res.json(result);
+    });
 });
 
 

@@ -1,5 +1,6 @@
 import {Db} from '../config/db';
 import { ArticleModel } from '../models/article';
+import { RatingModel } from '../models/rating';
 
 export class Article {
     private db;
@@ -9,7 +10,7 @@ export class Article {
     }
 
     public getAll(cb) {
-        this.db.query('SELECT * FROM article', [], (err, result) => {
+        this.db.query('SELECT * FROM article ORDER by id DESC', [], (err, result) => {
             if (err) return cb(err);         
             
             cb(null, result.rows);
@@ -31,7 +32,25 @@ export class Article {
     }
 
     public getOne(id: number, cb) {
-        this.db.query('SELECT * FROM article WHERE id = $1', [id], (err, result) => {
+        this.db.query(`
+                SELECT 
+                    a.id "id",
+                    a.title "title",
+                    a.body "body",
+                    a.user_id "user_id",
+                    array_to_json(array_agg(row_to_json(r.*))) rating
+                FROM article a 
+                LEFT JOIN (
+                    SELECT 
+                        id,
+                        user_id,
+                        feedback,
+                        rating,
+                        article_id
+                    FROM rating ORDER BY id DESC
+                ) r ON r.article_id = a.id 
+                WHERE a.id = $1 GROUP BY a.id;
+            `, [id], (err, result) => {
             if (err) return cb(err);
 
             cb(null, result.rows[0]);
@@ -48,6 +67,22 @@ export class Article {
 
     public remove(id: number, cb) {
         this.db.query('DELETE FROM article WHERE id = $1', [id], (err, result) => {
+            if (err) return cb(err);
+
+            cb(null, result.rows);
+        });
+    }
+
+    public rate(rating: RatingModel, cb) {
+        this.db.query(`
+            INSERT INTO rating (
+                user_id, 
+                article_id, 
+                feedback, 
+                rating
+            )
+            VALUES ($1, $2, $3, $4)
+        `, [rating.user_id, rating.article_id, rating.feedback, rating.rating], (err, result) => {
             if (err) return cb(err);
 
             cb(null, result.rows);
