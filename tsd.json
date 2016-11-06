@@ -9,28 +9,28 @@
       "commit": "44be13ae844ec0721109542d5902e41438d72855"
     },
     "express/express.d.ts": {
-      "commit": "44be13ae844ec0721109542d5902e41438d72855"
+      "commit": "df827a4d96dc999b3ecf113da6afbb49b2c9f0a2"
     },
     "serve-static/serve-static.d.ts": {
-      "commit": "44be13ae844ec0721109542d5902e41438d72855"
+      "commit": "df827a4d96dc999b3ecf113da6afbb49b2c9f0a2"
     },
     "express-serve-static-core/express-serve-static-core.d.ts": {
-      "commit": "44be13ae844ec0721109542d5902e41438d72855"
+      "commit": "df827a4d96dc999b3ecf113da6afbb49b2c9f0a2"
     },
     "node/node.d.ts": {
-      "commit": "44be13ae844ec0721109542d5902e41438d72855"
+      "commit": "df827a4d96dc999b3ecf113da6afbb49b2c9f0a2"
     },
     "mime/mime.d.ts": {
-      "commit": "44be13ae844ec0721109542d5902e41438d72855"
+      "commit": "df827a4d96dc999b3ecf113da6afbb49b2c9f0a2"
     },
     "body-parser/body-parser.d.ts": {
-      "commit": "44be13ae844ec0721109542d5902e41438d72855"
+      "commit": "df827a4d96dc999b3ecf113da6afbb49b2c9f0a2"
     },
     "pg-types/pg-types.d.ts": {
-      "commit": "44be13ae844ec0721109542d5902e41438d72855"
+      "commit": "df827a4d96dc999b3ecf113da6afbb49b2c9f0a2"
     },
     "pg/pg.d.ts": {
-      "commit": "44be13ae844ec0721109542d5902e41438d72855"
+      "commit": "df827a4d96dc999b3ecf113da6afbb49b2c9f0a2"
     }
   }
 }
