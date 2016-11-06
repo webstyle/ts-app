@@ -1,4 +1,4 @@
-# ts-app
+# Express.js example application with TypeScript
 
 MIT License
 
