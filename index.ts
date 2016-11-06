@@ -81,7 +81,7 @@ app.delete('/article/:id', requiredId, (req: express.Request, res: express.Respo
 
 
 // rating routes
-app.post('/article/:id/rate', requiredId, (req: express.Request, res: express.Response) => {
+app.post('/article/:id/rating', requiredId, (req: express.Request, res: express.Response) => {
     let id = req.params.id;
 
     if (!req.body) return res.send('BODY required');
@@ -94,6 +94,21 @@ app.post('/article/:id/rate', requiredId, (req: express.Request, res: express.Re
 
         res.json(result);
     });
+});
+
+app.delete('/article/:articleId/rating/:id', requiredId, (req: express.Request, res: express.Response) => {
+    if (!req.params.articleId) return res.send('Article ID required');
+    let params = {
+        id: req.params.id,
+        articleId: req.params.articleId
+    }
+
+    article.removeRating(params, (err, result) => {
+        if (err) return res.send(err.message);
+
+        res.json(result);
+    });
+
 });
 
 

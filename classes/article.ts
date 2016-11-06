@@ -1,6 +1,8 @@
 import {Db} from '../config/db';
 import { ArticleModel } from '../models/article';
 import { RatingModel } from '../models/rating';
+import * as async from 'async';
+
 
 export class Article {
     private db;
@@ -86,6 +88,28 @@ export class Article {
             if (err) return cb(err);
 
             cb(null, result.rows);
+        });
+    }
+
+    public removeRating(data, cb) {
+        async.waterfall([
+            (next) => {
+                this.getOne(data.article_id, (err, result) => {
+                    if (err) return next(err);
+                    next(null, result);
+                });
+            },
+            (article, next) => {
+                this.db.query('DELETE FROM rating WHERE id = $1', [data.id], (err, result) => {
+                    if (err) return next(err);
+
+                    next(null, result.rows);
+                });
+            }
+        ], (err, result) => {
+            if (err) return cb(err);
+
+            cb(null, result);
         });
     }
 
