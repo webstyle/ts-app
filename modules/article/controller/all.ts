@@ -1,7 +1,10 @@
 // import
 import * as express from 'express';
 import {ArticleModel} from "../../../common/models/article";
+import {Article} from "../../../classes/article";
 const router = express.Router();
+const article = new Article();
+
 
 // articles routes
 router.get('/article', (req: express.Request, res: express.Response) => {
@@ -57,4 +60,9 @@ router.delete('/article/:id', requiredId, (req: express.Request, res: express.Re
 
 });
 
-export router;
+// helper middleware
+function requiredId(req: express.Request, res: express.Response, next: express.NextFunction) {
+    if (!req.params.id) return res.send('ID required');
+
+    next();
+}
