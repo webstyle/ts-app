@@ -9,8 +9,8 @@ import { Article } from './classes/article';
 
 
 // load models
-import { ArticleModel } from './models/article';
-import { RatingModel } from './models/rating';
+import { ArticleModel } from './common/models/article';
+import { RatingModel } from './common/models/rating';
 
 
 // init application
@@ -22,62 +22,6 @@ const article = new Article;
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
-
-
-// articles routes
-app.get('/article', (req: express.Request, res: express.Response) => {
-    article.getAll((err, result: ArticleModel[]) => {
-        if (err) return res.send(err.message);
-
-        res.json(result);
-    });
-});
-
-app.post('/article', (req: express.Request, res: express.Response) => {
-    if (!req.body) return res.send('body is empty');
-    let body: ArticleModel = req.body; 
-    article.insert(body, (err, result) => {
-        if (err) res.send(err.message);
-
-        res.json(result);
-    });
-});
-
-app.get('/article/:id', requiredId, (req: express.Request, res: express.Response) => {
-    let id = req.params.id; 
-    
-    article.getOne(id, (err, result: ArticleModel) => {
-        if (err) return res.send(err.message);
-        if (!result) return res.send('empty');
- 
-        res.json(result);
-    });
-});
-
-app.put('/article/:id', requiredId, (req: express.Request, res: express.Response) => {
-    if (!req.body) return res.send('ID and BODY required');
-    let id = req.params.id;
-    let body = req.body;
-
-    article.update(body, id, (err, result) => {
-        if (err) return res.send(err.message);
-
-        res.json(result)
-    }); 
-
-});
-
-app.delete('/article/:id', requiredId, (req: express.Request, res: express.Response) => {
-    let id = req.params.id;
-
-    article.remove(id, (err, result) => {
-        if (err) return res.send(err.message);
-
-        res.json(result);
-    });
-
-});
-
 
 // rating routes
 app.post('/article/:id/rating', requiredId, (req: express.Request, res: express.Response) => {
@@ -112,7 +56,7 @@ app.delete('/article/:articleId/rating/:id', requiredId, (req: express.Request, 
 
 app.get('/', (req: express.Request, res: express.Response) => {
     res.json({message: 'App'});
-})
+});
 
 // helper middleware
 function requiredId(req: express.Request, res: express.Response, next: express.NextFunction) {
@@ -123,7 +67,7 @@ function requiredId(req: express.Request, res: express.Response, next: express.N
 
 
 // clustering
-var cluster = require('cluster');
+const cluster = require('cluster');
 
 if(cluster.isMaster) {
     var numWorkers = require('os').cpus().length;

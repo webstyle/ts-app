@@ -1,6 +1,6 @@
 import {Db} from '../config/db';
-import { ArticleModel } from '../models/article';
-import { RatingModel } from '../models/rating';
+import { ArticleModel } from '../common/models/article';
+import { RatingModel } from '../common/models/rating';
 import * as async from 'async';
 
 
