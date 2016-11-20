@@ -1,5 +1,4 @@
 import * as express from 'express';
-import {ArticleModel} from "../../../common/models/article";
 import {Article} from "../../../classes/article";
 import {RatingModel} from "../../../common/models/rating";
 const router = express.Router();
