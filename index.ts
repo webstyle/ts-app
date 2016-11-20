@@ -35,7 +35,6 @@ app.get('/article', (req: express.Request, res: express.Response) => {
 
 app.post('/article', (req: express.Request, res: express.Response) => {
     if (!req.body) return res.send('body is empty');
-
     let body: ArticleModel = req.body; 
     article.insert(body, (err, result) => {
         if (err) res.send(err.message);
@@ -111,6 +110,9 @@ app.delete('/article/:articleId/rating/:id', requiredId, (req: express.Request, 
 
 });
 
+app.get('/', (req: express.Request, res: express.Response) => {
+    res.json({message: 'App'});
+})
 
 // helper middleware
 function requiredId(req: express.Request, res: express.Response, next: express.NextFunction) {
@@ -120,6 +122,29 @@ function requiredId(req: express.Request, res: express.Response, next: express.N
 }
 
 
-app.listen(port, () => {
-    console.log(`Server is run on port ${port}`);
-});
+// clustering
+var cluster = require('cluster');
+
+if(cluster.isMaster) {
+    var numWorkers = require('os').cpus().length;
+
+    console.log('Master cluster setting up ' + numWorkers + ' workers...');
+
+    for(var i = 0; i < numWorkers; i++) {
+        cluster.fork();
+    }
+
+    cluster.on('online', function(worker) {
+        console.log('Worker ' + worker.process.pid + ' is online');
+    });
+
+    cluster.on('exit', function(worker, code, signal) {
+        console.log('Worker ' + worker.process.pid + ' died with code: ' + code + ', and signal: ' + signal);
+        console.log('Starting a new worker');
+        cluster.fork();
+    });
+} else {
+    app.listen(port, () => {
+        console.log(`Server is run on port ${port}`);
+    });
+}
